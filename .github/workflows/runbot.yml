@@ -1,8 +1,8 @@
 name: Run bot
 
 on:
-  schedule:
-  - cron: 58 12 25 09 *
+#  schedule:
+#  - cron: 58 12 25 09 *
   workflow_dispatch:
 
 jobs:
