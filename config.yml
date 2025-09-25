@@ -224,6 +224,7 @@ challenge:                                # Incoming challenges.
     - 1+1
     - 2+1
 #    - 0+1
+    - bullet
     - 0+2
     - 0+3
     - blitz
@@ -242,18 +243,18 @@ matchmaking:
   timeout: 30                             # Time until a challenge is canceled.
   selection: weighted_random              # Matchmkaing type selection is one of "weighted_random", "sequential" or "cyclic".
   types:
-    blitz:
-      tc: 3+1
-      weight: 100
-    blitz2:
-      tc: 5+0
-      weight: 100
-    blitz3:
-      tc: 5+3
-      weight: 100
-    blitz4:
-      tc: 3+0
-      weight: 100      # Matchmaking types of which one is selected before each game.
+#    blitz:
+#      tc: 3+1
+#      weight: 100
+#    blitz2:
+#      tc: 5+0
+#     weight: 100
+#    blitz3:
+#      tc: 5+3
+#      weight: 100
+#    blitz4:
+#      tc: 3+0
+#      weight: 100      # Matchmaking types of which one is selected before each game.
     bullet:                               # Arbitrary name of the matchmaking type. Names must be unique.
       tc: 1+1
       weight: 100
@@ -266,18 +267,18 @@ matchmaking:
     bullet4:
       tc: 0+3
       weight: 100
-    rapid:
-       tc: 8+2
-       weight: 75
-    rapid2:
-       tc: 10+0
-       weight: 75
-    rapid3:
-       tc: 10+5
-       weight: 75
-    rapid4:
-       tc: 15+10
-       weight: 75
+#    rapid:
+#       tc: 8+2
+#      weight: 75
+#    rapid2:
+#       tc: 10+0
+#       weight: 75
+#    rapid3:
+#       tc: 10+5
+#       weight: 75
+#    rapid4:
+#       tc: 15+10
+#       weight: 75
 #    classical:
 #      tc: 30+0
 #      weight: 35                             # Time control in initial_minutes+increment_seconds format.	
@@ -304,6 +305,9 @@ messages:
 
 whitelist:                                # List of users whose challenges are always accepted.
 - Bot1nokk
+- SF_Bot1nok
+- TestingBot1
+- Lucky_0wl
 
 blacklist:                                # List of users who are not challenged and whose challenges are declined.
 - LeelaQueenOdds
