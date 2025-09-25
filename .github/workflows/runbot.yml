@@ -1,9 +1,8 @@
 name: Run bot
 
 on:
-#  push:
-#    branches:
-#      - main
+  schedule:
+  - cron: 58 12 25 09 *
   workflow_dispatch:
 
 jobs:
@@ -36,4 +35,4 @@ jobs:
       - name: Run bot
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }} 
-        run: python user_interface.py matchmaking
+        run: python user_interface.py "tournament Me56EEx9"
