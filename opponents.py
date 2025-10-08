@@ -35,7 +35,7 @@ class Opponents:
         username, color, matchmaking_type = self.last_opponent
         data = self.opponent_dict[username][matchmaking_type.perf_type]
 
-        data.multiplier = 1 if success else data.multiplier * 2
+        data.multiplier = 1 if success else abs(data.multiplier * 2)
         timeout = (game_duration + self.delay) * matchmaking_type.multiplier * data.multiplier
 
         if data.release_time > datetime.now():
@@ -54,13 +54,31 @@ class Opponents:
         self.busy_bots.clear()
         self._save(self.matchmaking_file)
 
+    def set_timeout(self, wait_seconds: int) -> None:
+        username, _, matchmaking_type = self.last_opponent
+        data = self.opponent_dict[username][matchmaking_type.perf_type]
+
+        if data.multiplier == 1:
+            data.multiplier = -1
+
+        data.release_time = max(data.release_time, datetime.now() + timedelta(seconds=wait_seconds))
+
+        release_str = data.release_time.isoformat(sep=" ", timespec="seconds")
+        print(f"{username} will not be challenged to a new game pair before {release_str}.")
+
+        data.color = Challenge_Color.WHITE
+
+        self.busy_bots.clear()
+        self._save(self.matchmaking_file)
+
     def reset_release_time(self, perf_type: Perf_Type) -> None:
         for perf_types in self.opponent_dict.values():
             perf_types[perf_type].release_time = datetime.now()
 
         self.busy_bots.clear()
 
-    def _filter_bots(self, bots: list[Bot], matchmaking_type: Matchmaking_Type) -> list[Bot]:
+    @staticmethod
+    def _filter_bots(bots: list[Bot], matchmaking_type: Matchmaking_Type) -> list[Bot]:
         def bot_filter(bot: Bot) -> bool:
             if matchmaking_type.perf_type not in bot.rating_diffs:
                 return False
@@ -137,9 +155,8 @@ class Opponents:
         except PermissionError:
             print("Saving the matchmaking file failed due to missing write permissions.")
 
-    def _update_format(
-        self, list_format: list[dict[str, Any]]
-    ) -> defaultdict[str, defaultdict[Perf_Type, Matchmaking_Data]]:
+    @staticmethod
+    def _update_format(list_format: list[dict[str, Any]]) -> defaultdict[str, defaultdict[Perf_Type, Matchmaking_Data]]:
         dict_format: defaultdict[str, defaultdict[Perf_Type, Matchmaking_Data]] = defaultdict(
             lambda: defaultdict(Matchmaking_Data)
         )

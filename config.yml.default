@@ -3,7 +3,7 @@ token: "XXXXXXXXXXXXXXXXXXXXXXXX"         # Lichess OAuth2 Token.
 engines:
   standard:                               # Engine used for standard chess and when no suitable special engine is configured.
     dir: "./engines"                      # Directory containing the engine.
-    name: "stockfish"                     # Binary name of the engine to use.
+    name: "engine_executable"             # Binary name of the engine to use.
     ponder: true                          # Think on opponent's time.
     silence_stderr: false                 # Suppresses stderr output.
     move_overhead_multiplier: 1.0         # Increase if your bot flags games too often. Default move overhead is 1 second per 1 minute initital time.
@@ -17,7 +17,7 @@ engines:
 #     nodes: 4000000                      # Max nodes per move.
 # variants:                               # Engine used for variants when no suitable special engine is configured.
 #   dir: "./engines"                      # Directory containing the engine.
-#   name: "fairy-stockfish"               # Binary name of the engine to use.
+#   name: "variant_engine_executable"     # Binary name of the engine to use.
 #   ponder: true                          # Think on opponent's time.
 #   silence_stderr: false                 # Suppresses stderr output.
 #   move_overhead_multiplier: 1.0         # Increase if your bot flags games too often. Default move overhead is 1 second per 1 minute initital time.
@@ -154,7 +154,7 @@ challenge:                                # Incoming challenges.
   variants:                               # Chess variants to accept (https://lichess.org/variant).
     - standard
     - chess960
-#   - fromPosition
+    - fromPosition
 #   - antichess
 #   - atomic
 #   - crazyhouse
@@ -162,12 +162,17 @@ challenge:                                # Incoming challenges.
 #   - kingOfTheHill
 #   - racingKings
 #   - threeCheck
-  time_controls:                          # Speeds or time controls in initial_minutes+increment_seconds format to accept.
+  bot_time_controls:                      # Speeds or time controls in initial_minutes+increment_seconds format to accept against BOTs.
     - bullet
     - blitz
     - rapid
 #   - classical
 #   - 25+0
+  human_time_controls:                    # Speeds or time controls in initial_minutes+increment_seconds format to accept against humans.
+    - bullet
+    - blitz
+    - rapid
+    - classical
   bot_modes:                              # Game modes to accept against BOTs.
 #   - casual                              # Unrated games.
     - rated                               # Rated games
@@ -176,14 +181,14 @@ challenge:                                # Incoming challenges.
     - rated                               # Rated games
 
 matchmaking:
-  delay: 10                               # Time in seconds the bot must be idle before a new challenge is started.
+  delay: 480                              # Time in seconds the bot must be idle before a new challenge is started.
   timeout: 30                             # Time until a challenge is canceled.
   selection: weighted_random              # Matchmkaing type selection is one of "weighted_random", "sequential" or "cyclic".
   types:                                  # Matchmaking types of which one is selected before each game.
-    bullet:                               # Arbitrary name of the matchmaking type. Names must be unique.
-      tc: 1+1                             # Time control in initial_minutes+increment_seconds format.
+    blitz:                                # Arbitrary name of the matchmaking type. Names must be unique.
+      tc: 3+1                             # Time control in initial_minutes+increment_seconds format.
 #   casual_chess960:
-#     tc: 0.5+1
+#     tc: 8+1
 #     rated: false
 #     variant: chess960
 #   optional_settings:
@@ -214,6 +219,9 @@ whitelist:                                # List of users whose challenges are a
 blacklist:                                # List of users who are not challenged and whose challenges are declined.
 # - Username1
 # - Username2
+
+online_blacklists:                        # List of URLs for online blacklists. One username per line.
+# - https://raw.githubusercontent.com/xu-shawn/lichess-bots-blocklist/refs/heads/main/blocklist  # Contains most of the bot accounts that use Stockfish.
 
 books:                                    # Names of the opening books (to be used above in the opening_books section) and paths to the opening books.
   DefaultBook: "/path/to/DefaultBook.bin"
