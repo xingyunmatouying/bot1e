@@ -1,8 +1,8 @@
 name: Run bot
 
 on:
-#  schedule:
-#    - cron: "1 */5 * * *"
+  schedule:
+   - cron: "1 */5 * * *"
   workflow_dispatch:
 
 #concurrency:
@@ -48,4 +48,4 @@ jobs:
       - name: Run bot
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }} 
-        run: python user_interface.py "tournament qAevW1lu"
+        run: python user_interface.py matchmaking
